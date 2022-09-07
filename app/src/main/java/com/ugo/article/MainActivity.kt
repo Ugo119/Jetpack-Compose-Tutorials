@@ -1,15 +1,16 @@
 package com.ugo.article
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,75 +27,49 @@ class MainActivity : ComponentActivity() {
         setContent {
             ArticleTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    ArticleWithImage(
-                        stringResource(id = R.string.title),
-                        stringResource(id = R.string.para_one),
-                        stringResource(id = R.string.para_two)
-                    )
-                }
+                DiceRollerApp()
             }
         }
     }
 }
 
 @Composable
-fun ArticleText(title: String, paraOne: String, paraTwo: String) {
-    Column {
-        Text(
-            text = title,
-            fontSize = 24.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp)
-                .wrapContentWidth(Alignment.Start)
-
-        )
-        Text(
-            text = paraOne,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp),
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = paraTwo,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp),
-            textAlign = TextAlign.Justify
-        )
-    }
+fun DiceRollerApp() {
+    DiceWithButtonAndImage(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    )
 }
-
-@Composable
-fun ArticleWithImage(title: String, paraOne: String, paraTwo: String) {
-    val image = painterResource(id = R.drawable.ic_article_img)
-    Column {
-        Image(
-            painter = image,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-        ArticleText(title = title, paraOne = paraOne, paraTwo = paraTwo)
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    ArticleTheme {
-        ArticleWithImage(
-            stringResource(id = R.string.title),
-            stringResource(id = R.string.para_one),
-            stringResource(id = R.string.para_two)
-        )
+fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
+    var result by remember { mutableStateOf(1) }
+    var imageResourse = when(result) {
+        1 -> R.drawable.dice_1
+        2 -> R.drawable.dice_2
+        3 -> R.drawable.dice_3
+        4 -> R.drawable.dice_4
+        5 -> R.drawable.dice_5
+        6 -> R.drawable.dice_6
+        else -> 0
+    }
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(painter = painterResource(id = imageResourse), contentDescription = "Dice")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { result = rollDice() }) {
+            Text(stringResource(id = R.string.roll))
+        }
     }
 }
+
+fun rollDice(): Int {
+    return (1..6).random()
+}
+
+
+
