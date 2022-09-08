@@ -11,4 +11,8 @@
         data dependencies, rather than focus on the process of the UI\'s construction, such as
         initializing an element and then attaching it to a parent. To create a Composable function,
         you add the @Composable annotation to the function name.</string>
+    <string name="first">Tap the lemon tree to select a lemon.</string>
+    <string name="second">keep tapping the lemon to squeeze it.</string>
+    <string name="third">Tap the lemonade to drink it.</string>
+    <string name="fourth">Tap the empty glass to start again.</string>
 </resources>
